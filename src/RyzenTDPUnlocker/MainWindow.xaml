@@ -1,0 +1,250 @@
+﻿<Window x:Name="RyzenTDPUnlocker" x:Class="RyzenTDPUnlocker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="RyzenLaptopTDPUnlocker" Height="440" Width="790" WindowStartupLocation="CenterScreen" Foreground="{x:Null}" WindowStyle="None" AllowsTransparency="True">
+    <Window.Resources>
+        <!--Simple Simple Slider
+    Similiar to ScrollBar this template uses Track to layout the draggable Thumb which has an up and down repeat button
+    It uses Simple SliderThumb and SimpleScrollRepeatButtonStyle for the page up and down repeat buttons -->
+        <Style x:Key="SliderX" TargetType="{x:Type Slider}">
+            <Setter Property="Background" Value="{DynamicResource LightBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Slider}">
+                        <Grid x:Name="GridRoot">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- TickBar shows the ticks for Slider -->
+                            <TickBar Visibility="Collapsed" x:Name="TopTick" Height="4" SnapsToDevicePixels="True" Placement="Top" Fill="{DynamicResource GlyphBrush}"/>
+                            <Border Grid.Row="1" Margin="0" x:Name="Border" Height="4" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
+
+                            <!-- The Track lays out the repeat buttons and thumb -->
+                            <Track Grid.Row="1" x:Name="PART_Track">
+                                <Track.Thumb>
+                                    <Thumb Style="{DynamicResource SimpleSliderThumb}"/>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Style="{DynamicResource SimpleScrollRepeatButtonStyle}" Command="Slider.IncreaseLarge"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Style="{DynamicResource SimpleScrollRepeatButtonStyle2}" Command="Slider.DecreaseLarge"/>
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+
+                            <TickBar Visibility="Collapsed" Grid.Row="2" x:Name="BottomTick" Height="4" SnapsToDevicePixels="True" Placement="Bottom" Fill="{TemplateBinding Foreground}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="TickPlacement" Value="TopLeft">
+                                <Setter Property="Visibility" Value="Visible" TargetName="TopTick"/>
+                            </Trigger>
+                            <Trigger Property="TickPlacement" Value="BottomRight">
+                                <Setter Property="Visibility" Value="Visible" TargetName="BottomTick"/>
+                            </Trigger>
+                            <Trigger Property="TickPlacement" Value="Both">
+                                <Setter Property="Visibility" Value="Visible" TargetName="TopTick"/>
+                                <Setter Property="Visibility" Value="Visible" TargetName="BottomTick"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource DisabledBorderBrush}" TargetName="Border"/>
+                            </Trigger>
+
+                            <!-- Use a rotation to create a Vertical Slider form the default Horizontal -->
+                            <Trigger Property="Orientation" Value="Vertical">
+                                <Setter Property="LayoutTransform" TargetName="GridRoot">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <!-- Track rotates itself based on orientation so need to force it back -->
+                                <Setter TargetName="PART_Track" Property="Orientation" Value="Horizontal"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle">
+                <Setter.Value>
+                    <Style>
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="#FFDDDDDD"/>
+            <Setter Property="BorderBrush" Value="#FF707070"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="ToggleButton.IsChecked" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="#FF838383"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="StyleHighLight" TargetType="{x:Type Grid}">
+            <Setter Property="Background" Value="#66FFFFFF"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#90FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="GridStyleHLC" TargetType="{x:Type Grid}">
+            <Setter Property="Background" Value="#33FFFFFF"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#45FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="LabelHightLight" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="#99FFFFFF"/>
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Window.Resources>
+    <Window.Background>
+        <ImageBrush/>
+    </Window.Background>
+    <Grid HorizontalAlignment="Left" Height="440" Margin="0" VerticalAlignment="Bottom" Width="790" ShowGridLines="False">
+        <Grid.Background>
+            <ImageBrush ImageSource="image/ryzenadblue.png"/>
+        </Grid.Background>
+        <Grid x:Name="seting" Margin="0,0,0,102">
+            <Grid x:Name="b_pro1" HorizontalAlignment="Left" Height="44" Margin="6,103,0,0" VerticalAlignment="Top" Width="154" Opacity="0.5
+                  " MouseDown="B_pro1_MouseDown" Style="{DynamicResource StyleHighLight}" >
+                <Label x:Name="t_pro1" Content="自定义" HorizontalAlignment="Right" Margin="0,12,18,10" VerticalAlignment="Center" Foreground="White" FontSize="14" Height="28"/>
+                <Image x:Name="image" HorizontalAlignment="Left" Height="22" Margin="25,13,0,0" VerticalAlignment="Top" Width="20" Source="image/ryzenicon1.png" Stretch="None"/>
+            </Grid>
+            <Grid x:Name="b_pro2" HorizontalAlignment="Left" Height="44" Margin="161,103,0,0" VerticalAlignment="Top" Width="155" Opacity="0.5" MouseDown="B_pro2_MouseDown" Style="{DynamicResource StyleHighLight}">
+                <Label x:Name="t_pro2" Content="节  能" HorizontalAlignment="Right" Margin="0,12,18,10" VerticalAlignment="Center" Foreground="White" FontSize="14" Height="28"/>
+                <Image x:Name="image_Copy" HorizontalAlignment="Left" Height="22" Margin="25,13,0,0" VerticalAlignment="Top" Width="18" Source="image/ryzenicon2.png" Stretch="None"/>
+            </Grid>
+            <Grid x:Name="b_pro3" HorizontalAlignment="Left" Height="44" Margin="317,103,0,0" VerticalAlignment="Top" Width="155"  Opacity="0.5" MouseDown="B_pro3_MouseDown" Style="{DynamicResource StyleHighLight}" >
+                <Label x:Name="t_pro3" Content="平  衡" HorizontalAlignment="Right" Margin="0,12,18,10" VerticalAlignment="Center" Foreground="White" FontSize="14" Height="28"/>
+                <Image x:Name="image_Copy1" HorizontalAlignment="Left" Height="20" Margin="25,13,0,0" VerticalAlignment="Top" Width="22" Source="image/ryzenicon3.png" Stretch="None"/>
+            </Grid>
+            <Grid x:Name="b_pro4" HorizontalAlignment="Left" Height="44" Margin="473,103,0,0" VerticalAlignment="Top" Width="155"  Opacity="0.5" MouseDown="B_pro4_MouseDown" Style="{DynamicResource StyleHighLight}">
+                <Label x:Name="t_pro4" Content="高性能" HorizontalAlignment="Right" Margin="0,12,18,10" VerticalAlignment="Center" Foreground="White" FontSize="14" Height="28"/>
+                <Image x:Name="image_Copy2" HorizontalAlignment="Left" Height="22" Margin="25,14,0,0" VerticalAlignment="Top" Width="17" Source="image/ryzenicon4.png" Stretch="None"/>
+            </Grid>
+            <Grid x:Name="b_pro5" HorizontalAlignment="Left" Height="44" Margin="629,103,0,0" VerticalAlignment="Top" Width="155"  Opacity="0.5" MouseDown="B_pro5_MouseDown" Style="{DynamicResource StyleHighLight}">
+                <Label x:Name="t_pro5" Content="极致游戏" HorizontalAlignment="Right" Margin="0,12,18,10" VerticalAlignment="Center" Foreground="White" FontSize="14" Height="28"/>
+                <Image x:Name="image_Copy3" HorizontalAlignment="Left" Height="18" Margin="25,16,0,0" VerticalAlignment="Top" Width="25" Source="image/ryzenicon5.png" Stretch="None" Opacity="0.7"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="44" Margin="7,159,0,0" VerticalAlignment="Top" Width="776" AutomationProperties.HelpText="触发温度限制后的功耗墙" Style="{DynamicResource GridStyleHLC}">
+                <Label x:Name="t_maxtdp" Content="最大功耗限制" HorizontalAlignment="Left" Margin="15,7,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14"/>
+                <Label x:Name="t_maxtdpvar" Content="{Binding Value, ElementName=maxtdpslider}"  Margin="0,8,57,8" VerticalAlignment="Center" Foreground="White" FontSize="14" Width="41" HorizontalAlignment="Right"/>
+                <Slider x:Name="maxtdpslider"  IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="150,15,0,0" Style="{DynamicResource SliderX}" VerticalAlignment="Top" Width="479" Background="#3F000000" Value="2" Maximum="100" Minimum="5" SmallChange="1" ValueChanged="Maxtdpslider_ValueChanged"/>
+                <Label x:Name="t_w1" Content="W" Margin="0,8,18,8" VerticalAlignment="Center" Foreground="#B2FFFFFF" FontSize="14" Width="44" HorizontalAlignment="Right"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="44" Margin="7,204,0,0" VerticalAlignment="Top" Width="776" Style="{DynamicResource GridStyleHLC}">
+                <Label x:Name="t_fastoctdp" Content="短时间功耗" HorizontalAlignment="Left" Margin="15,7,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14"/>
+                <Slider x:Name="fastocslider" Maximum="{Binding Maximum, ElementName=maxtdpslider}" Minimum="{Binding Minimum, ElementName=maxtdpslider}" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="150,15,0,0" Style="{DynamicResource SliderX}" VerticalAlignment="Top" Width="479" Background="#3F000000" Value="1" SmallChange="1" ValueChanged="Maxtdpslider_ValueChanged"/>
+                <Label x:Name="t_w2" Content="W" Margin="0,8,18,8" VerticalAlignment="Center" Foreground="#B2FFFFFF" FontSize="14" Width="44" HorizontalAlignment="Right"/>
+                <Label x:Name="t_fastocvar" Content="{Binding Value, ElementName=fastocslider}"  Margin="0,8,57,8" VerticalAlignment="Center" Foreground="White" FontSize="14" Width="41" HorizontalAlignment="Right"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="44" Margin="7,249,0,0" VerticalAlignment="Top" Width="776" Style="{DynamicResource GridStyleHLC}">
+                <Label x:Name="t_slowoctdp" Content="长时间功耗" HorizontalAlignment="Left" Margin="15,9,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14"/>
+                <Slider x:Name="slowocslider" Maximum="{Binding Maximum, ElementName=maxtdpslider}" Minimum="{Binding Minimum, ElementName=maxtdpslider}" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="150,15,0,0" Style="{DynamicResource SliderX}" VerticalAlignment="Top" Width="479" Background="#3F000000" Value="1" SmallChange="1" ValueChanged="Maxtdpslider_ValueChanged"/>
+                <Label x:Name="t_w3" Content="W" Margin="0,8,18,8" VerticalAlignment="Center" Foreground="#B2FFFFFF" FontSize="14" Width="44" HorizontalAlignment="Right"/>
+                <Label x:Name="t_slowocvar" Content="{Binding Value, ElementName=slowocslider}"  Margin="0,8,57,8" VerticalAlignment="Center" Foreground="White" FontSize="14" Width="41" HorizontalAlignment="Right"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="44" Margin="7,294,0,0" VerticalAlignment="Top" Width="776" Style="{DynamicResource GridStyleHLC}" >
+                <Label x:Name="t_tempc" Content="温度墙控制" HorizontalAlignment="Left" Margin="15,7,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14"/>
+                <Label x:Name="t_c" Content="°C" Margin="0,8,18,8" VerticalAlignment="Center" Foreground="#B2FFFFFF" FontSize="14" Width="44" HorizontalAlignment="Right"/>
+                <Slider x:Name="tempslider"  IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="150,15,0,0" Style="{DynamicResource SliderX}" VerticalAlignment="Top" Width="479" Background="#3F000000" Value="2" Maximum="90" Minimum="50" SmallChange="1" ValueChanged="Maxtdpslider_ValueChanged"/>
+                <Label x:Name="t_tempvar" Content="{Binding Value, ElementName=tempslider}"  Margin="0,8,57,8" VerticalAlignment="Center" Foreground="White" FontSize="14" Width="41" HorizontalAlignment="Right"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="44" Margin="7,339,0,-45" VerticalAlignment="Top" Width="776" Style="{DynamicResource GridStyleHLC}" >
+                <Label x:Name="t_vrm" Content="处理器电流控制" HorizontalAlignment="Left" Margin="15,7,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14"/>
+                <Slider x:Name="vrmslider"  IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="150,15,0,0" Style="{DynamicResource SliderX}" VerticalAlignment="Top" Width="479" Background="#3F000000" Value="2" Maximum="500000" Minimum="20000" SmallChange="1"/>
+                <Label x:Name="t_mah" Content="mAh" Margin="0,8,18,8" VerticalAlignment="Center" Foreground="#B2FFFFFF" FontSize="14" Width="44" HorizontalAlignment="Right"/>
+                <Label x:Name="t_vrmvar" Content="{Binding Value, ElementName=vrmslider}"  Margin="0,8,57,8" VerticalAlignment="Center" Foreground="White" FontSize="14" Width="63" HorizontalAlignment="Right"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="help" HorizontalAlignment="Left" Height="279" Margin="8,103,0,0" VerticalAlignment="Top" Width="774" Background="#33FFFFFF" d:IsHidden="True" Visibility="Hidden">
+            <TextBlock x:Name="t_helptinfo" HorizontalAlignment="Left" Margin="31,19,0,0" TextWrapping="Wrap" Text="帮助信息&#xA;&#xA;最大功耗限制：触发温度限制后的功耗墙&#xA;短时间功耗：未触发温度限制时，短时间处理器功耗&#xA;长时间功耗：未触发温度限制时，长时间处理器功耗&#xA;温度墙控制：处理器的温度控制，达到此温度时以限制的最大功耗运行&#xA;处理器电流控制：处理器电流控制，你可以调整电流来降低或提升功耗&#xA;&#xA;提醒: 解锁功耗可能带来未知的风险，请保持良好的散热以免造成处理器损坏" VerticalAlignment="Top" Width="719" Foreground="White" Height="236" FontSize="14"/>
+        </Grid>
+        <Grid x:Name="about" HorizontalAlignment="Left" Height="279" Margin="8,103,0,0" VerticalAlignment="Top" Width="774" Background="#33FFFFFF" d:IsHidden="True" Visibility="Hidden">
+            <TextBlock x:Name="t_aboutinfo" HorizontalAlignment="Left" Margin="31,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="534" Foreground="White" Height="236" FontSize="14"><Run Text="关于此软件&#xA;&#xA;RyzenLaptopTDPUnlocker基于RyzenADJ项目构建，永久免费使用&#xA;RyzenADJ的GitHub：https://github.com/flygoat/ryzenadj&#xA;&#xA;如果你有什么问题或建议可以联系&#xA;开发者邮箱: encvstin@qq.com &#xA;&#xA;如你觉得此软件对你有所帮助，欢迎微信扫码鼓励开发者继续优化&#xA;&#xA;version 1.6.0"/></TextBlock>
+            <Image x:Name="image1" HorizontalAlignment="Left" Height="178" Margin="570,50,0,0" VerticalAlignment="Top" Width="165" Source="image/weixinzs.png"/>
+        </Grid>
+        <Grid x:Name="background" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="790" Background="#99000000" MouseMove="RyzenTDPUnlocker_MouseMove">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="399*"/>
+                <ColumnDefinition Width="277*"/>
+                <ColumnDefinition Width="114*"/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="background_line" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="790" Background="#99075FC9" MouseMove="RyzenTDPUnlocker_MouseMove" Grid.ColumnSpan="3" Margin="0,43,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="399*"/>
+                    <ColumnDefinition Width="277*"/>
+                    <ColumnDefinition Width="114*"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <Label x:Name="t_tilite" Content="锐龙笔记本功耗解锁工具" HorizontalAlignment="Left" Margin="71,7,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontSize="15"/>
+            <Image x:Name="amdlogo" HorizontalAlignment="Left" Height="32" VerticalAlignment="Center" Width="61" Source="image/ryzenlogo.png" Margin="10,6,0,6" Stretch="Fill" IsEnabled="False"/>
+            <Label x:Name="t_urcpu" Content="你的处理器" HorizontalAlignment="Left" Margin="22,59,0,-43" VerticalAlignment="Top" Foreground="White" FontSize="14"/>
+            <Label x:Name="t_apply" Content="应用" HorizontalAlignment="Left" Margin="48,59,0,-43" VerticalAlignment="Top" FontSize="14" MouseDown="T_apply_MouseDown" Grid.Column="2" Style="{DynamicResource LabelHightLight}" FontWeight="Normal"/>
+            <Label x:Name="t_reset" Content="重置" HorizontalAlignment="Left" Margin="2,59,0,-43" VerticalAlignment="Top" FontSize="14" MouseDown="T_reset_MouseDown" Grid.Column="2" Style="{DynamicResource LabelHightLight}"  FontWeight="Normal"/>
+            <Label x:Name="t_chs" Content="中文" HorizontalAlignment="Left" Margin="22,395,0,-379" VerticalAlignment="Top" FontSize="14" MouseDown="T_chs_MouseDown" Style="{DynamicResource LabelHightLight}"  FontWeight="Normal"/>
+            <Label x:Name="t_eng" Content="ENG" HorizontalAlignment="Left" Margin="55,395,0,-379" VerticalAlignment="Top" FontSize="14" MouseDown="T_eng_MouseDown" Opacity="0.5" Style="{DynamicResource LabelHightLight}"  FontWeight="Normal"/>
+            <Label x:Name="t_cpuinfo" Content="unkown" HorizontalAlignment="Left" Margin="100,59,0,-43" VerticalAlignment="Top" Foreground="#CCFFFFFF" FontSize="14" Width="411" Grid.ColumnSpan="2"/>
+            <Label x:Name="t_about" Content="关于" HorizontalAlignment="Left" Margin="48,395,0,-379" VerticalAlignment="Top"  FontSize="14" MouseDown="T_about_MouseDown" Grid.Column="2" Style="{DynamicResource LabelHightLight}"  FontWeight="Normal"/>
+            <Label x:Name="t_help" Content="帮助" HorizontalAlignment="Left" Margin="236,59,0,-43" VerticalAlignment="Top" FontSize="14" MouseDown="T_help_MouseDown" Grid.Column="1" Style="{DynamicResource LabelHightLight}"  FontWeight="Normal"/>
+            <CheckBox x:Name="t_autorun" Content="自动启动" Margin="145,65,56.025,-37.78" VerticalAlignment="Top" FontSize="14" Background="White" Foreground="#C9FFFFFF" Grid.Column="1" />
+            <Image x:Name="b_close" HorizontalAlignment="Left" Margin="72,10,0,0" VerticalAlignment="Top" Source="image/winconter_03.png" Stretch="None" MouseDown="b_close_MouseDown" Grid.Column="2" Width="30" Height="26"/>
+            <Image x:Name="b_hide" HorizontalAlignment="Left" Margin="49,9,0,0" VerticalAlignment="Top" Source="image/winconter_01.png" Stretch="None" MouseDown="b_hide_MouseDown" Grid.Column="2" Width="30" Height="26"/>
+            <Label x:Name="t_version" Content="version 1.6.0" HorizontalAlignment="Left" Margin="341,395,0,-379" VerticalAlignment="Top"  FontSize="14" MouseDown="T_about_MouseDown" Style="{DynamicResource LabelHightLight}"  FontWeight="Normal" Grid.ColumnSpan="2" Visibility="Hidden"/>
+        </Grid>
+    </Grid>
+</Window>
